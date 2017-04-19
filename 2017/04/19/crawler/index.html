@@ -1,0 +1,74 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="author" content="microzz"><link rel="alternative" href="/atom.xml" title="ECUT Club" type="application/atom+xml"><link rel="icon" href="/favicon.png"><title> - ECUT Club</title><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--><script src="/js/jquery-3.1.1.min.js"></script><script src="/js/fancybox/jquery.fancybox.min.js"></script><!-- Hotjar Tracking Code for ochukai.me --></head><body style="opacity:0"><header class="head"><h1 class="head-title u-fl"><a href="/">ECUT Club</a></h1><nav class="head-nav u-fr"><ul class="head-nav__list"><li class="head-nav__item"><a href="/archives" class="head-nav__link">カタログ/（目录）</a></li></ul></nav></header><main class="main"><article class="post"><header class="post__head">  <time datetime="2017-04-19T00:24:13.319Z" class="post__time">April 19, 2017</time><h1 class="post__title"><a href="/2017/04/19/crawler/"></a></h1><div class="post__main echo"><hr>
+<p>title: Node.js实现一个小爬虫<br>date: 2017-02-14 16:33:13<br>tags:</p>
+<ul>
+<li>Nodejs</li>
+<li>爬虫</li>
+<li>JS</li>
+<li>ES6</li>
+<li>ECMAScript6</li>
+<li>JavaScript</li>
+</ul>
+<hr>
+<h1 id="Node-js实现一个小爬虫"><a href="#Node-js实现一个小爬虫" class="headerlink" title="Node.js实现一个小爬虫"></a>Node.js实现一个小爬虫</h1><h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>我们将用最简单的代码实现一个简单的小爬虫。本示例采用ES6写法。首先我们要安装第三方cheerio模块，在项目目录使用<code>npm install cheerio --save</code> 命令即可。在文件中我们需要引入如下模块：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">模块名</th>
+<th style="text-align:center">作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">cheerio</td>
+<td style="text-align:center">类似jQuery，方便对DOM内容操作</td>
+</tr>
+<tr>
+<td style="text-align:center">https</td>
+<td style="text-align:center">针对https协议，http模块用法类似</td>
+</tr>
+</tbody>
+</table>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><pre><code class="javascript"><span class="comment">// 引入模块</span>
+<span class="keyword">const</span> https = <span class="built_in">require</span>(<span class="string">'https'</span>);
+<span class="keyword">const</span> cheerio = <span class="built_in">require</span>(<span class="string">'cheerio'</span>);
+
+<span class="comment">// 爬取目标网站URL</span>
+<span class="keyword">let</span> url = <span class="string">'https://microzz.com'</span>;
+
+<span class="comment">// 使用get方法访问</span>
+https.get(url, res =&gt; {
+  <span class="keyword">let</span> html = <span class="string">''</span>;
+
+  <span class="comment">// 监听data事件获取html源码</span>
+  res.on(<span class="string">'data'</span>, data =&gt; {
+    html += data;
+  });
+
+ <span class="comment">// 监听end事件，同时把获取到的数据传给filterData方法进行过滤</span>
+  res.on(<span class="string">'end'</span>, () =&gt; {
+    <span class="keyword">let</span> titles = filterData(html);
+    <span class="built_in">console</span>.log(titles);
+  });
+
+}).on(<span class="string">'error'</span>, e =&gt; {
+  <span class="built_in">console</span>.log(e.message);
+});
+
+<span class="comment">// 使用cheerio模块对内容进行筛选过滤</span>
+<span class="function"><span class="keyword">function</span> <span class="title">filterData</span>(<span class="params">html</span>) </span>{
+  <span class="keyword">let</span> $ = cheerio.load(html);
+  <span class="keyword">let</span> oTitles = $(<span class="string">'.post-title-link'</span>);
+  <span class="keyword">let</span> titles = <span class="string">''</span>;
+
+  oTitles.each( <span class="function">(<span class="params">index, item</span>) =&gt;</span> {
+    <span class="keyword">let</span> title = $(item).text();
+    <span class="keyword">let</span> end = index == (oTitles.length - <span class="number">1</span>) ? <span class="string">''</span> : <span class="string">'\n'</span>;
+    titles += <span class="string">'【'</span> + (index+<span class="number">1</span>) + <span class="string">'】'</span> + title + end;
+  });
+
+  <span class="keyword">return</span> titles;
+
+}
+</code></pre>
+<p>至此一个简单的爬取 <a href="https://microzz.com" target="_blank" rel="external">https://microzz.com</a> 文章内容标题的小爬虫就完成啦😄</p>
+</div></header></article><section class="reward"> <a href="#" class="btn-reward">打赏</a><div class="reward-wrapper clearfix"><img src="/img/wechat.png"></div></section></main><footer class="foot"><div class="foot-copy u-fl">&copy; 2016-2017 microzz</div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2017/04/19/create-arr/" class="page-menu__link icon-arrow-left"></a></li><li class="page-menu__item"><a title="Next" href="/2017/04/19/decorator/" class="page-menu__link icon-arrow-right"></a></li></menu></footer><script src="/js/scroller.js"></script><script src="/js/main.js"></script></body></html>

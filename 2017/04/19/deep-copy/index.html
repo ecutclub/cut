@@ -1,0 +1,105 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="author" content="microzz"><link rel="alternative" href="/atom.xml" title="ECUT Club" type="application/atom+xml"><link rel="icon" href="/favicon.png"><title> - ECUT Club</title><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--><script src="/js/jquery-3.1.1.min.js"></script><script src="/js/fancybox/jquery.fancybox.min.js"></script><!-- Hotjar Tracking Code for ochukai.me --></head><body style="opacity:0"><header class="head"><h1 class="head-title u-fl"><a href="/">ECUT Club</a></h1><nav class="head-nav u-fr"><ul class="head-nav__list"><li class="head-nav__item"><a href="/archives" class="head-nav__link">カタログ/（目录）</a></li></ul></nav></header><main class="main"><article class="post"><header class="post__head">  <time datetime="2017-04-19T00:24:13.350Z" class="post__time">April 19, 2017</time><h1 class="post__title"><a href="/2017/04/19/deep-copy/"></a></h1><div class="post__main echo"><hr>
+<p>title: JavaScript自定义方法实现复杂对象的深拷贝<br>date: 2017-01-26 19:11:02<br>tags:</p>
+<ul>
+<li>ES6</li>
+<li>JavaScript</li>
+<li>JS</li>
+<li>ECMAScript6</li>
+<li>深拷贝</li>
+</ul>
+<hr>
+<h1 id="JavaScript自定义方法实现复杂对象的深拷贝"><a href="#JavaScript自定义方法实现复杂对象的深拷贝" class="headerlink" title="JavaScript自定义方法实现复杂对象的深拷贝"></a>JavaScript自定义方法实现复杂对象的深拷贝</h1><h3 id="ES6中的Object-assign方法"><a href="#ES6中的Object-assign方法" class="headerlink" title="ES6中的Object.assign方法"></a>ES6中的Object.assign方法</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ES6中新增Object.assign方法用于对象的合并，将源对象（source）的所有可枚举属性，复制到目标对象（target）。</p>
+<hr>
+<h4 id="❗️注意点"><a href="#❗️注意点" class="headerlink" title="❗️注意点:"></a>❗️注意点:</h4><blockquote>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;Object.assign方法实行的是浅拷贝，而不是深拷贝。也就是说，如果源对象某个属性的值是对象，那么目标对象拷贝得到的是这个对象的引用。</p>
+</blockquote>
+<hr>
+<h1 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h1><p>所以我们可以自己动手来手工实现复杂对象的深拷贝方法，具体实现有如下两种方法：</p>
+<h2 id="方法1⃣️"><a href="#方法1⃣️" class="headerlink" title="方法1⃣️"></a>方法1⃣️</h2><pre><code class="javascript"><span class="comment">/**
+ * 自定义方法实现复杂对象的深拷贝
+ */</span>
+<span class="function"><span class="keyword">function</span> <span class="title">deepCopy</span>(<span class="params">obj</span>) </span>{
+  <span class="keyword">let</span> copy = {};
+
+  <span class="comment">// 如果是基本类型直接赋值，</span>
+  <span class="comment">// 如果是数组则拷贝，</span>
+  <span class="comment">// 其他对象则递归调用deepCopy方法</span>
+    <span class="built_in">Object</span>.keys(obj).forEach(<span class="function"><span class="params">key</span> =&gt;</span> {
+
+      <span class="keyword">if</span> (obj[key] <span class="keyword">instanceof</span> <span class="built_in">Array</span>) {
+        copy[key] = <span class="built_in">Array</span>.from(obj[key]);
+      }
+      <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">typeof</span> obj[key] === <span class="string">'object'</span>) {
+        copy[key] = deepCopy(obj[key]);
+      }
+      <span class="keyword">else</span> {
+        copy[key] = obj[key];
+      }
+    })
+
+  <span class="keyword">return</span> copy;
+}
+</code></pre>
+<h2 id="方法2⃣️"><a href="#方法2⃣️" class="headerlink" title="方法2⃣️"></a>方法2⃣️</h2><pre><code class="javascript"><span class="function"><span class="keyword">function</span> <span class="title">deepCopy</span>(<span class="params">obj</span>) </span>{
+  <span class="keyword">return</span> <span class="built_in">JSON</span>.parse(<span class="built_in">JSON</span>.stringify(obj));
+}
+</code></pre>
+<hr>
+<h1 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h1><p>&nbsp;&nbsp;以上通过两种方法实现了对象的深拷贝，下面通过数据进行简单验证:</p>
+<pre><code class="javascript"><span class="comment">//自定义一个复杂数据对象</span>
+<span class="keyword">let</span> data = {
+  <span class="attr">name</span>: <span class="string">'Zhao'</span>,
+  <span class="attr">age</span>: <span class="number">22</span>,
+  <span class="attr">url</span>: <span class="string">'http://microzz.com'</span>,
+  <span class="attr">scores</span>:{
+    <span class="attr">math</span>: <span class="number">66</span>,
+    <span class="attr">java</span>: <span class="number">88</span>,
+    <span class="attr">test</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]
+  },
+  <span class="attr">skills</span>: [<span class="string">'Node.js'</span>, <span class="string">'ReactJS'</span>, <span class="string">'ES6'</span>],
+  say() {
+    <span class="built_in">console</span>.log(<span class="string">`My name is <span class="subst">${<span class="keyword">this</span>.name}</span>`</span>)
+  }
+}
+
+<span class="comment">//进行深拷贝，把数据保存在copyData</span>
+<span class="keyword">let</span> copyData = deepCopy(data);
+
+<span class="comment">//对copyData进行修改，看是否对原数据有影响</span>
+copyData.name = <span class="string">'Hui'</span>;
+copyData.scores.math = <span class="number">99</span>;
+copyData.scores.test[<span class="number">1</span>] = <span class="number">100</span>;
+copyData.skills[<span class="number">2</span>] = <span class="string">'ES5'</span>;
+copyData.say = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>{
+  <span class="built_in">console</span>.log(<span class="string">`Copy: My name is <span class="subst">${<span class="keyword">this</span>.name}</span>`</span>);
+}
+
+<span class="comment">//打印输出查看结果进行验证</span>
+<span class="built_in">console</span>.log(data);
+<span class="comment">/*
+{ name: 'Zhao',
+age: 22,
+url: 'http://microzz.com',
+scores: { math: 66, java: 88, test: [ 1, 2, 3 ] },
+skills: [ 'Node.js', 'ReactJS', 'ES6' ],
+say: [Function: say] }
+ */</span>
+
+<span class="built_in">console</span>.log(copyData);
+<span class="comment">/*
+{ name: 'Hui',
+age: 22,
+url: 'http://microzz.com',
+scores: { math: 99, java: 88, test: [ 1, 100, 3 ] },
+skills: [ 'Node.js', 'ReactJS', 'ES5' ],
+say: [Function] }
+ */</span>
+
+data.say(); <span class="comment">// My name is Zhao</span>
+copyData.say(); <span class="comment">// Copy: My name is Hui</span>
+</code></pre>
+<hr>
+<blockquote>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;两种方法的结果均一致，实现了对象的深拷贝，但是第二种方法通过原生的JSON.parse和JSON.stringify方法更为简单易懂。</p>
+</blockquote>
+</div></header></article><section class="reward"> <a href="#" class="btn-reward">打赏</a><div class="reward-wrapper clearfix"><img src="/img/wechat.png"></div></section></main><footer class="foot"><div class="foot-copy u-fl">&copy; 2016-2017 microzz</div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2017/04/19/decorator/" class="page-menu__link icon-arrow-left"></a></li><li class="page-menu__item"><a title="Next" href="/2017/04/19/destructuring/" class="page-menu__link icon-arrow-right"></a></li></menu></footer><script src="/js/scroller.js"></script><script src="/js/main.js"></script></body></html>

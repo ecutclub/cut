@@ -1,0 +1,163 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="author" content="microzz"><link rel="alternative" href="/atom.xml" title="ECUT Club" type="application/atom+xml"><link rel="icon" href="/favicon.png"><title> - ECUT Club</title><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--><script src="/js/jquery-3.1.1.min.js"></script><script src="/js/fancybox/jquery.fancybox.min.js"></script><!-- Hotjar Tracking Code for ochukai.me --></head><body style="opacity:0"><header class="head"><h1 class="head-title u-fl"><a href="/">ECUT Club</a></h1><nav class="head-nav u-fr"><ul class="head-nav__list"><li class="head-nav__item"><a href="/archives" class="head-nav__link">カタログ/（目录）</a></li></ul></nav></header><main class="main"><article class="post"><header class="post__head">  <time datetime="2017-04-19T00:24:13.741Z" class="post__time">April 19, 2017</time><h1 class="post__title"><a href="/2017/04/19/sass/"></a></h1><div class="post__main echo"><hr>
+<p>title: SASS用法指南<br>date: 2017-03-18 23:17:32<br>tags:</p>
+<ul>
+<li>SASS</li>
+<li>SCSS</li>
+<li>CSS</li>
+</ul>
+<hr>
+<blockquote>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;学过CSS的人都知道，它不是一种编程语言。<br>&nbsp;&nbsp;&nbsp;&nbsp;你可以用它开发网页样式，但是没法用它编程。也就是说，CSS基本上是设计师的工具，不是程序员的工具。在程序员眼里，CSS是一件很麻烦的东西。它没有变量，也没有条件语句，只是一行行单纯的描述，写起来相当费事。</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;很自然地，有人就开始为CSS加入编程元素，这被叫做”CSS预处理器”（css preprocessor）。它的基本思想是，用一种专门的编程语言，进行网页样式设计，然后再编译成正常的CSS文件。<br>&nbsp;&nbsp;&nbsp;&nbsp;各种”CSS预处理器”之中，我自己最喜欢SASS，觉得它有很多优点，打算以后都用它来写CSS。下面是我整理的用法总结，供自己开发时参考，相信对其他人也有用。</p>
+</blockquote>
+<h1 id="SASS用法指南"><a href="#SASS用法指南" class="headerlink" title="SASS用法指南"></a>SASS用法指南</h1><p>作者：阮一峰</p>
+<h2 id="一、什么是SASS"><a href="#一、什么是SASS" class="headerlink" title="一、什么是SASS"></a>一、什么是SASS</h2><p>SASS是一种CSS的开发工具，提供了许多便利的写法，大大节省了设计者的时间，使得CSS的开发，变得简单和可维护。<br>本文总结了SASS的主要用法。我的目标是，有了这篇文章，日常的一般使用就不需要去看官方文档了。</p>
+<h2 id="二、安装和使用"><a href="#二、安装和使用" class="headerlink" title="二、安装和使用"></a>二、安装和使用</h2><h3 id="2-1-安装"><a href="#2-1-安装" class="headerlink" title="2.1 安装"></a>2.1 安装</h3><p>SASS是Ruby语言写的，但是两者的语法没有关系。不懂Ruby，照样使用。只是必须先安装Ruby，然后再安装SASS。<br>假定你已经安装好了Ruby，接着在命令行输入下面的命令：<br>　　<code>gem install sass</code><br>然后，就可以使用了。</p>
+<h3 id="2-2-使用"><a href="#2-2-使用" class="headerlink" title="2.2 使用"></a>2.2 使用</h3><p>SASS文件就是普通的文本文件，里面可以直接使用CSS语法。文件后缀名是.scss，意思为Sassy CSS。<br>下面的命令，可以在屏幕上显示.scss文件转化的css代码。（假设文件名为test。）<br>　　<code>sass test.scss</code><br>如果要将显示结果保存成文件，后面再跟一个.css文件名。<br>　　<code>sass test.scss test.css</code><br>SASS提供四个编译风格的选项：<br>　　<em> <code>nested</code>：嵌套缩进的css代码，它是默认值。
+　　</em> <code>expanded</code>：没有缩进的、扩展的css代码。<br>　　<em> <code>compact</code>：简洁格式的css代码。
+　　</em> <code>compressed</code>：压缩后的css代码。<br>生产环境当中，一般使用最后一个选项。<br>　　<code>sass --style compressed test.sass test.css</code><br>你也可以让SASS监听某个文件或目录，一旦源文件有变动，就自动生成编译后的版本。</p>
+<p>　　// watch a file<br>　　<code>sass --watch input.scss:output.css</code><br>　　<br>　　// watch a directory<br>　　<code>sass --watch app/sass:public/stylesheets</code><br>　　<br>SASS的官方网站，提供了一个在线转换器。你可以在那里，试运行下面的各种例子。</p>
+<h2 id="三、基本用法"><a href="#三、基本用法" class="headerlink" title="三、基本用法"></a>三、基本用法</h2><h3 id="3-1-变量"><a href="#3-1-变量" class="headerlink" title="3.1 变量"></a>3.1 变量</h3><p>SASS允许使用变量，所有变量以$开头。</p>
+<pre><code class="scss">　　<span class="variable">$blue</span> : <span class="number">#1875e7</span>;　
+　　<span class="selector-tag">div</span> {
+　　　<span class="attribute">color</span> : <span class="variable">$blue</span>;
+　　}
+</code></pre>
+<p>　　<br>如果变量需要镶嵌在字符串之中，就必须需要写在#{}之中。</p>
+<pre><code class="scss">　　<span class="variable">$side</span> : left;
+　　<span class="selector-class">.rounded</span> {
+　　　　<span class="attribute">border</span>-#{<span class="variable">$side</span>}-radius: <span class="number">5px</span>;
+　　}
+</code></pre>
+<h3 id="3-2-计算功能"><a href="#3-2-计算功能" class="headerlink" title="3.2 计算功能"></a>3.2 计算功能</h3><p>SASS允许在代码中使用算式：</p>
+<pre><code class="scss">　　<span class="selector-tag">body</span> {
+　　　　<span class="attribute">margin</span>: (<span class="number">14px</span>/<span class="number">2</span>);
+　　　　<span class="attribute">top</span>: <span class="number">50px</span> + <span class="number">100px</span>;
+　　　　<span class="attribute">right</span>: <span class="variable">$var</span> * <span class="number">10%</span>;
+　　}
+</code></pre>
+<h3 id="3-3-嵌套"><a href="#3-3-嵌套" class="headerlink" title="3.3 嵌套"></a>3.3 嵌套</h3><p>SASS允许选择器嵌套。比如，下面的CSS代码：</p>
+<pre><code class="scss">　　<span class="selector-tag">div</span> <span class="selector-tag">h1</span> {
+　　　　<span class="attribute">color</span> : red;
+　　}
+</code></pre>
+<p>可以写成：</p>
+<pre><code class="scss">　　<span class="selector-tag">div</span> {
+　　　　hi {
+　　　　　　<span class="attribute">color</span>:red;
+　　　　}
+　　}
+</code></pre>
+<p>属性也可以嵌套，比如<code>border-color</code>属性，可以写成：</p>
+<pre><code class="scss">　　<span class="selector-tag">p</span> {
+　　　　<span class="attribute">border</span>: {
+　　　　　　color: red;
+　　　　}
+　　}
+</code></pre>
+<p>注意，<code>border</code>后面必须加上冒号。<br>在嵌套的代码块内，可以使用&amp;引用父元素。比如<code>a:hover</code>伪类，可以写成：</p>
+<pre><code class="scss">　　<span class="selector-tag">a</span> {
+　　　　&amp;:hover { <span class="attribute">color</span>: <span class="number">#ffb3ff</span>; }
+　　}
+</code></pre>
+<h3 id="3-4-注释"><a href="#3-4-注释" class="headerlink" title="3.4 注释"></a>3.4 注释</h3><p>SASS共有两种注释风格。<br>标准的CSS注释 <code>/* comment */</code>，会保留到编译后的文件。<br>单行注释 <code>// comment</code>，只保留在SASS源文件中，编译后被省略。<br>在<code>/*</code>后面加一个感叹号，表示这是”重要注释”。即使是压缩模式编译，也会保留这行注释，通常可以用于声明版权信息。</p>
+<pre><code class="scss">　　<span class="comment">/*! 
+　　　　重要注释！
+　　*/</span>
+</code></pre>
+<h2 id="四、代码的重用"><a href="#四、代码的重用" class="headerlink" title="四、代码的重用"></a>四、代码的重用</h2><h3 id="4-1-继承"><a href="#4-1-继承" class="headerlink" title="4.1 继承"></a>4.1 继承</h3><p>SASS允许一个选择器，继承另一个选择器。比如，现有class1：</p>
+<pre><code class="scss">　　<span class="selector-class">.class1</span> {
+　　　　<span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#ddd</span>;
+　　}
+</code></pre>
+<p>class2要继承class1，就要使用<code>@extend</code>命令：</p>
+<pre><code class="scss">　　<span class="selector-class">.class2</span> {
+　　　　@<span class="keyword">extend</span> .class1;
+　　　　<span class="attribute">font-size</span>:<span class="number">120%</span>;
+　　}
+</code></pre>
+<h3 id="4-2-Mixin"><a href="#4-2-Mixin" class="headerlink" title="4.2 Mixin"></a>4.2 Mixin</h3><p>Mixin有点像C语言的宏（macro），是可以重用的代码块。<br>使用<code>@mixin</code>命令，定义一个代码块。</p>
+<pre><code class="scss">　　@<span class="keyword">mixin</span> left {
+　　　　<span class="attribute">float</span>: left;
+　　　　<span class="attribute">margin-left</span>: <span class="number">10px</span>;
+　　}
+</code></pre>
+<p>使用<code>@include</code>命令，调用这个mixin。</p>
+<pre><code class="scss">　　<span class="selector-tag">div</span> {
+　　　　@<span class="keyword">include</span> left;
+　　}
+</code></pre>
+<p>mixin的强大之处，在于可以指定参数和缺省值。</p>
+<pre><code class="scss">　　@<span class="keyword">mixin</span> left(<span class="variable">$value</span>: 10px) {
+　　　　<span class="attribute">float</span>: left;
+　　　　<span class="attribute">margin-right</span>: <span class="variable">$value</span>;
+　　}
+</code></pre>
+<p>使用的时候，根据需要加入参数：</p>
+<pre><code class="scss">　　<span class="selector-tag">div</span> {
+　　　　@<span class="keyword">include</span> left(<span class="number">20px</span>);
+　　}
+</code></pre>
+<p>下面是一个mixin的实例，用来生成浏览器前缀。</p>
+<pre><code class="scss">　　@<span class="keyword">mixin</span> rounded(<span class="variable">$vert</span>, <span class="variable">$horz</span>, <span class="variable">$radius</span>: 10px) {
+　　　　<span class="attribute">border</span>-#{<span class="variable">$vert</span>}-#{<span class="variable">$horz</span>}-radius: <span class="variable">$radius</span>;
+　　　　-moz-<span class="attribute">border-radius</span>-#{<span class="variable">$vert</span>}#{<span class="variable">$horz</span>}: <span class="variable">$radius</span>;
+　　　　-webkit-<span class="attribute">border</span>-#{<span class="variable">$vert</span>}-#{<span class="variable">$horz</span>}-radius: <span class="variable">$radius</span>;
+　　}
+</code></pre>
+<p>使用的时候，可以像下面这样调用：</p>
+<pre><code class="scss">　　<span class="selector-id">#navbar</span> <span class="selector-tag">li</span> { @<span class="keyword">include</span> rounded(top, left); }
+　　<span class="selector-id">#footer</span> { @<span class="keyword">include</span> rounded(top, left, 5px); }
+</code></pre>
+<h3 id="4-3-颜色函数"><a href="#4-3-颜色函数" class="headerlink" title="4.3 颜色函数"></a>4.3 颜色函数</h3><p>SASS提供了一些内置的颜色函数，以便生成系列颜色。</p>
+<pre><code class="scss">　　lighten(<span class="selector-id">#cc3</span>, 10%) <span class="comment">// #d6d65c</span>
+　　darken(<span class="selector-id">#cc3</span>, 10%) <span class="comment">// #a3a329</span>
+　　grayscale(<span class="selector-id">#cc3</span>) <span class="comment">// #808080</span>
+　　complement(<span class="selector-id">#cc3</span>) <span class="comment">// #33c</span>
+</code></pre>
+<h3 id="4-4-插入文件"><a href="#4-4-插入文件" class="headerlink" title="4.4 插入文件"></a>4.4 插入文件</h3><p><code>@import</code>命令，用来插入外部文件。<br>　　<code>@import &quot;path/filename.scss&quot;;</code><br>如果插入的是.css文件，则等同于css的import命令。<br>　　<code>@import &quot;foo.css&quot;;</code>
+　　</p>
+<h2 id="五、高级用法"><a href="#五、高级用法" class="headerlink" title="五、高级用法"></a>五、高级用法</h2><h3 id="5-1-条件语句"><a href="#5-1-条件语句" class="headerlink" title="5.1 条件语句"></a>5.1 条件语句</h3><p><code>@if</code>可以用来判断：</p>
+<pre><code class="scss">　　<span class="selector-tag">p</span> {
+　　　　@<span class="keyword">if</span> 1 + 1 == 2 { <span class="attribute">border</span>: <span class="number">1px</span> solid; }
+　　　　@<span class="keyword">if</span> 5 &lt; 3 { <span class="attribute">border</span>: <span class="number">2px</span> dotted; }
+　　}
+</code></pre>
+<p>配套的还有<code>@else</code>命令：</p>
+<pre><code class="scss">　　@<span class="keyword">if</span> lightness(<span class="variable">$color</span>) &gt; 30% {
+　　　　<span class="attribute">background-color</span>: <span class="number">#000</span>;
+　　} @<span class="keyword">else</span> {
+　　　　<span class="attribute">background-color</span>: <span class="number">#fff</span>;
+　　}
+</code></pre>
+<h3 id="5-2-循环语句"><a href="#5-2-循环语句" class="headerlink" title="5.2 循环语句"></a>5.2 循环语句</h3><p>SASS支持<code>for</code>循环：</p>
+<pre><code class="scss">　　@<span class="keyword">for</span> <span class="variable">$i</span> from 1 to 10 {
+　　　　<span class="selector-class">.border-</span>#{<span class="variable">$i</span>} {
+　　　　　　<span class="attribute">border</span>: #{<span class="variable">$i</span>}px solid blue;
+　　　　}
+　　}
+</code></pre>
+<p>也支持<code>while</code>循环：</p>
+<pre><code class="scss">　　<span class="variable">$i</span>: <span class="number">6</span>;
+　　@<span class="keyword">while</span> <span class="variable">$i</span> &gt; 0 {
+　　　　<span class="selector-class">.item-</span>#{<span class="variable">$i</span>} { <span class="attribute">width</span>: <span class="number">2em</span> * <span class="variable">$i</span>; }
+　　　　<span class="variable">$i</span>: <span class="variable">$i</span> - <span class="number">2</span>;
+　　}
+</code></pre>
+<p><code>each</code>命令，作用与<code>for</code>类似：</p>
+<pre><code class="scss">　　@<span class="keyword">each</span> <span class="variable">$member</span> in a, b, c, d {
+　　　　.#{<span class="variable">$member</span>} {
+　　　　　　<span class="attribute">background-image</span>: url(<span class="string">"/image/#{$member}.jpg"</span>);
+　　　　}
+　　}
+</code></pre>
+<h3 id="5-3-自定义函数"><a href="#5-3-自定义函数" class="headerlink" title="5.3 自定义函数"></a>5.3 自定义函数</h3><p>SASS允许用户编写自己的函数。</p>
+<pre><code class="scss">　　@function double(<span class="variable">$n</span>) {
+　　　　@return <span class="variable">$n</span> * 2;
+　　}
+　　<span class="selector-id">#sidebar</span> {
+　　　　<span class="attribute">width</span>: double(<span class="number">5px</span>);
+　　}
+</code></pre>
+<h3 id="须知"><a href="#须知" class="headerlink" title="须知"></a>须知</h3><p><strong>感谢</strong>阮一峰老师的总结，<a href="http://www.ruanyifeng.com/blog/2012/06/sass.html" target="_blank" rel="external">原文地址</a></p>
+</div></header></article><section class="reward"> <a href="#" class="btn-reward">打赏</a><div class="reward-wrapper clearfix"><img src="/img/wechat.png"></div></section></main><footer class="foot"><div class="foot-copy u-fl">&copy; 2016-2017 microzz</div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2017/04/19/responsive/" class="page-menu__link icon-arrow-left"></a></li><li class="page-menu__item"><a title="Next" href="/2017/04/19/select-plugin/" class="page-menu__link icon-arrow-right"></a></li></menu></footer><script src="/js/scroller.js"></script><script src="/js/main.js"></script></body></html>

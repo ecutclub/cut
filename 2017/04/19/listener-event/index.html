@@ -1,0 +1,65 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="author" content="microzz"><link rel="alternative" href="/atom.xml" title="ECUT Club" type="application/atom+xml"><link rel="icon" href="/favicon.png"><title> - ECUT Club</title><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--><script src="/js/jquery-3.1.1.min.js"></script><script src="/js/fancybox/jquery.fancybox.min.js"></script><!-- Hotjar Tracking Code for ochukai.me --></head><body style="opacity:0"><header class="head"><h1 class="head-title u-fl"><a href="/">ECUT Club</a></h1><nav class="head-nav u-fr"><ul class="head-nav__list"><li class="head-nav__item"><a href="/archives" class="head-nav__link">カタログ/（目录）</a></li></ul></nav></header><main class="main"><article class="post"><header class="post__head">  <time datetime="2017-04-19T00:24:13.585Z" class="post__time">April 19, 2017</time><h1 class="post__title"><a href="/2017/04/19/listener-event/"></a></h1><div class="post__main echo"><hr>
+<p>title: JavaScript通过原型设计一个事件对象<br>date: 2017-01-21 22:13:02<br>tags:</p>
+<ul>
+<li>JavaScript</li>
+<li>JS</li>
+<li>事件</li>
+<li>event</li>
+<li>原型</li>
+</ul>
+<hr>
+<h1 id="JavaScript通过原型设计一个事件对象"><a href="#JavaScript通过原型设计一个事件对象" class="headerlink" title="JavaScript通过原型设计一个事件对象"></a>JavaScript通过原型设计一个事件对象</h1><h3 id="实现以下功能："><a href="#实现以下功能：" class="headerlink" title="实现以下功能："></a>实现以下功能：</h3><blockquote>
+<ol>
+<li>添加监听者</li>
+<li>移除监听者</li>
+<li>清空监听者</li>
+<li>发起事件信号</li>
+</ol>
+</blockquote>
+<h3 id="设计思路如下："><a href="#设计思路如下：" class="headerlink" title="设计思路如下："></a>设计思路如下：</h3><blockquote>
+<p>  定义一个对象，包含一个实例成员listeners，用于记录所有的监听者<br>为对象的原型增加，新增、删除、清空和执行四个成员<br>具体代码可以参见下面示例</p>
+</blockquote>
+<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><pre><code class="javascript"><span class="function"><span class="keyword">function</span> <span class="title">myEvent</span>(<span class="params"></span>)</span>{
+    <span class="keyword">this</span>.listeners = [];    <span class="comment">//监听者列表</span>
+}
+<span class="comment">//添加一个监听者</span>
+myEvent.prototype.addListener = <span class="function"><span class="keyword">function</span>(<span class="params">fn</span>)</span>{
+    <span class="keyword">this</span>.listeners.push(fn);
+};
+<span class="comment">//除移一个监听者</span>
+myEvent.prototype.removeListener = <span class="function"><span class="keyword">function</span>(<span class="params">fn</span>)</span>{
+    <span class="keyword">var</span> index = <span class="keyword">this</span>.listeners.indexOf(fn);
+    <span class="keyword">this</span>.listeners.splice(index,<span class="number">1</span>);
+};
+<span class="comment">//清除所有监听者</span>
+myEvent.prototype.clearListeners = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>{
+    <span class="keyword">this</span>.listeners = [];
+};
+<span class="comment">//发出执行信号，并告之所有监听者</span>
+myEvent.prototype.raise = <span class="function"><span class="keyword">function</span>(<span class="params">e</span>)</span>{
+    <span class="keyword">var</span> l = <span class="keyword">this</span>.listeners.length;
+    <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; l; i++){
+        <span class="keyword">this</span>.listeners[i](e);    <span class="comment">//执行所有监听方法</span>
+    }
+};
+
+<span class="keyword">var</span> me = <span class="keyword">new</span> myEvent();
+
+<span class="comment">//事件fun1</span>
+<span class="function"><span class="keyword">function</span> <span class="title">fun1</span>(<span class="params">e</span>) </span>{
+    <span class="built_in">console</span>.log(<span class="string">'fun1: '</span> + e);
+}
+
+<span class="comment">//事件fun2</span>
+<span class="function"><span class="keyword">function</span> <span class="title">fun2</span>(<span class="params">e</span>) </span>{
+    <span class="built_in">console</span>.log(<span class="string">'fun2: '</span> + e);
+}
+
+<span class="comment">//调用相关方法进行测试</span>
+me.addListener(fun1);
+me.addListener(fun2);
+me.removeListener(fun1)
+<span class="comment">//me.clearListeners();</span>
+me.raise(<span class="string">"a"</span>);
+</code></pre>
+</div></header></article><section class="reward"> <a href="#" class="btn-reward">打赏</a><div class="reward-wrapper clearfix"><img src="/img/wechat.png"></div></section></main><footer class="foot"><div class="foot-copy u-fl">&copy; 2016-2017 microzz</div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2017/04/19/let/" class="page-menu__link icon-arrow-left"></a></li><li class="page-menu__item"><a title="Next" href="/2017/04/19/mac-shell/" class="page-menu__link icon-arrow-right"></a></li></menu></footer><script src="/js/scroller.js"></script><script src="/js/main.js"></script></body></html>

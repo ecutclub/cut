@@ -1,0 +1,38 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="author" content="microzz"><link rel="alternative" href="/atom.xml" title="ECUT Club" type="application/atom+xml"><link rel="icon" href="/favicon.png"><title> - ECUT Club</title><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--><script src="/js/jquery-3.1.1.min.js"></script><script src="/js/fancybox/jquery.fancybox.min.js"></script><!-- Hotjar Tracking Code for ochukai.me --></head><body style="opacity:0"><header class="head"><h1 class="head-title u-fl"><a href="/">ECUT Club</a></h1><nav class="head-nav u-fr"><ul class="head-nav__list"><li class="head-nav__item"><a href="/archives" class="head-nav__link">カタログ/（目录）</a></li></ul></nav></header><main class="main"><article class="post"><header class="post__head">  <time datetime="2017-04-19T00:24:13.522Z" class="post__time">April 19, 2017</time><h1 class="post__title"><a href="/2017/04/19/iterators-test/"></a></h1><div class="post__main echo"><hr>
+<p>title: JavaScript中手动模拟创建Iterators迭代器(遍历器)<br>date: 2017-01-29 20:58:35<br>tags:</p>
+<ul>
+<li>ES6</li>
+<li>JavaScript</li>
+<li>JS</li>
+<li>ECMAScript6</li>
+<li>Iterators</li>
+</ul>
+<hr>
+<blockquote>
+<p>&nbsp;&nbsp;&nbsp;Generator函数是ES6提供的一种异步编程解决方案，具体请看<a href="http://microzz.com/2017/01/13/generator/" target="_blank" rel="external">Generator函数教程</a>。Generator函数有多种理解角度。从语法上，首先可以把它理解成，Generator函数是一个状态机，封装了多个内部状态。<br>&nbsp;&nbsp;&nbsp;执行Generator函数会返回一个遍历器对象，也就是说，Generator函数除了状态机，还是一个遍历器对象生成函数。返回的遍历器对象，可以依次遍历Generator函数内部的每一个状态。</p>
+</blockquote>
+<h1 id="JavaScript中如何手动模拟创建Iterators迭代器-遍历器"><a href="#JavaScript中如何手动模拟创建Iterators迭代器-遍历器" class="headerlink" title="JavaScript中如何手动模拟创建Iterators迭代器(遍历器)"></a>JavaScript中如何手动模拟创建Iterators迭代器(遍历器)</h1><h2 id="通过代码实现，具体如下"><a href="#通过代码实现，具体如下" class="headerlink" title="通过代码实现，具体如下"></a>通过代码实现，具体如下</h2><pre><code class="javascript"><span class="comment">/**
+ * JavaScript中手动模拟创建Iterators迭代器
+ */</span>
+<span class="function"><span class="keyword">function</span> <span class="title">Iterators</span>(<span class="params">args</span>) </span>{
+  <span class="keyword">let</span> i = <span class="number">0</span>;
+  <span class="keyword">return</span> {
+    next() {
+      <span class="keyword">let</span> done = (i &gt;= args.length);
+      <span class="keyword">let</span> value = done ? <span class="literal">undefined</span> : args[i++];
+      <span class="keyword">return</span> {
+        <span class="attr">value</span>: value,
+        <span class="attr">done</span>: done
+      }
+    }
+  }
+}
+
+<span class="comment">//进行测试验证结果</span>
+<span class="keyword">let</span> test = Iterators([<span class="string">'microzz'</span>, <span class="string">'涵月天'</span>, <span class="string">'IT技术分享'</span>]);
+<span class="built_in">console</span>.log(test.next()); <span class="comment">// { value: 'microzz', done: false }</span>
+<span class="built_in">console</span>.log(test.next()); <span class="comment">// { value: '涵月天', done: false }</span>
+<span class="built_in">console</span>.log(test.next()); <span class="comment">// { value: 'IT技术分享', done: false }</span>
+<span class="built_in">console</span>.log(test.next()); <span class="comment">// { value: undefined, done: true }</span>
+</code></pre>
+</div></header></article><section class="reward"> <a href="#" class="btn-reward">打赏</a><div class="reward-wrapper clearfix"><img src="/img/wechat.png"></div></section></main><footer class="foot"><div class="foot-copy u-fl">&copy; 2016-2017 microzz</div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2017/04/19/iterator/" class="page-menu__link icon-arrow-left"></a></li><li class="page-menu__item"><a title="Next" href="/2017/04/19/jscss/" class="page-menu__link icon-arrow-right"></a></li></menu></footer><script src="/js/scroller.js"></script><script src="/js/main.js"></script></body></html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="author" content="microzz"><link rel="alternative" href="/atom.xml" title="ECUT Club" type="application/atom+xml"><link rel="icon" href="/favicon.png"><title> - ECUT Club</title><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/js/fancybox/jquery.fancybox.min.css"><!--[if lt IE 9]><script>(function(a,b){a="abbr article aside audio bdi canvas data datalist details dialog figcaption figure footer header hgroup main mark meter nav output progress section summary template time video".split(" ");for(b=a.length-1;b>=0;b--)document.createElement(a[b])})()</script><![endif]--><script src="/js/jquery-3.1.1.min.js"></script><script src="/js/fancybox/jquery.fancybox.min.js"></script><!-- Hotjar Tracking Code for ochukai.me --></head><body style="opacity:0"><header class="head"><h1 class="head-title u-fl"><a href="/">ECUT Club</a></h1><nav class="head-nav u-fr"><ul class="head-nav__list"><li class="head-nav__item"><a href="/archives" class="head-nav__link">カタログ/（目录）</a></li></ul></nav></header><main class="main"><article class="post"><header class="post__head">  <time datetime="2017-04-19T00:24:13.366Z" class="post__time">April 19, 2017</time><h1 class="post__title"><a href="/2017/04/19/destructuringTest/"></a></h1><div class="post__main echo"><hr>
+<p>title: ES6中嵌套的对象如何解构(Destructuring)<br>date: 2017-01-24 19:17:51<br>tags:</p>
+<ul>
+<li>ES6</li>
+<li>ECMAScript6</li>
+<li>JS</li>
+<li>JavaScript</li>
+<li>Destructuring</li>
+</ul>
+<hr>
+<h1 id="ES6中嵌套的对象如何解构"><a href="#ES6中嵌套的对象如何解构" class="headerlink" title="ES6中嵌套的对象如何解构"></a>ES6中嵌套的对象如何解构</h1><blockquote>
+<p>对于普通对象的解构大家应该没什么问题(详细学习ES6的解构知识请看这里👉 <a href="http://microzz.com/2016/11/13/destructuring/" target="_blank" rel="external">变量的解构赋值(Destructuring)</a> )，但是遇到复杂对象结构的应该如何处理呢？可以看下面的示例。</p>
+</blockquote>
+<pre><code class="javascript"><span class="comment">//声明一个对象保存信息</span>
+<span class="keyword">let</span> jsonData = {
+  <span class="attr">name</span>: <span class="string">'Zhao'</span>,
+  <span class="attr">age</span>: <span class="number">22</span>,
+  <span class="attr">score</span>: {
+    <span class="attr">Chinese</span>: <span class="number">77</span>,
+    <span class="attr">math</span>: <span class="number">99</span>
+  }
+}
+
+<span class="comment">//对嵌套结构的对象进行解构1</span>
+<span class="keyword">let</span> {name, age, <span class="attr">score</span>:{Chinese, math}} = jsonData;
+
+<span class="built_in">console</span>.log(<span class="string">`name is <span class="subst">${name}</span>`</span>); <span class="comment">//name is Zhao</span>
+<span class="built_in">console</span>.log(<span class="string">`age is <span class="subst">${age}</span>`</span>); <span class="comment">//age is 22</span>
+<span class="built_in">console</span>.log(<span class="string">`Chinese score is <span class="subst">${Chinese}</span>`</span>); <span class="comment">//Chinese score is 77</span>
+<span class="built_in">console</span>.log(<span class="string">`math score is <span class="subst">${math}</span>`</span>);  <span class="comment">//math score is 99</span>
+
+<span class="comment">//另外一个例子😄</span>
+<span class="keyword">let</span> obj = {
+  <span class="attr">p</span>: [
+    <span class="string">'Hello'</span>,
+    { <span class="attr">y</span>: <span class="string">'World'</span> }
+  ]
+};
+
+<span class="comment">//对嵌套结构的对象进行解构2</span>
+<span class="keyword">let</span> { <span class="attr">p</span>: [x, { y }] } = obj;
+<span class="built_in">console</span>.log(<span class="string">`x is <span class="subst">${x}</span>`</span>); <span class="comment">// x is Hello</span>
+<span class="built_in">console</span>.log(<span class="string">`y is <span class="subst">${y}</span>`</span>); <span class="comment">// y is World</span>
+</code></pre>
+</div></header></article><section class="reward"> <a href="#" class="btn-reward">打赏</a><div class="reward-wrapper clearfix"><img src="/img/wechat.png"></div></section></main><footer class="foot"><div class="foot-copy u-fl">&copy; 2016-2017 microzz</div><menu class="page-menu u-fr"><li class="page-menu__item"><a title="Previous" href="/2017/04/19/destructuring/" class="page-menu__link icon-arrow-left"></a></li><li class="page-menu__item"><a title="Next" href="/2017/04/19/es6-style/" class="page-menu__link icon-arrow-right"></a></li></menu></footer><script src="/js/scroller.js"></script><script src="/js/main.js"></script></body></html>
